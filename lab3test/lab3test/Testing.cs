@@ -306,6 +306,18 @@ namespace lab3test
             PatternName pattern = (PatternName)rand.Next(PatternsCount);
             Game.AddQuestion(pattern, "true != false");
             Assert.AreEqual(null, Game.CurrentQuestion());
+     
+       }
+        [Test]
+        // Игра начинается с первого вопроса
+        public void PatternsGameTest_GameStartCurrentQuestionFirst()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Game.AddQuestion(pattern, "true != false");
+            Game.AddQuestion(pattern, "false != true");
+            Game.Start();
+            Assert.AreEqual(Game.Questions[0], Game.CurrentQuestion());
         }
     }
 }
