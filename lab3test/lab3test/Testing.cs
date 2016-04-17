@@ -146,5 +146,37 @@ namespace lab3test
             Assert.IsFalse(Q.TryAnswer(pattern2));
         }
 
+        // Тестирование класса PictureQuestion
+
+        [Test]
+        // Тестирование конструктора по умолчанию
+        public void PictureQuestionTest_DefaultConstructor()
+        {
+            PictureQuestion Q = new PictureQuestion();
+            Assert.AreEqual(PatternName.NoPattern, Q.CorrectAnswer);
+        }
+
+        [Test]
+        // Тестирование конструктора по названию паттерна
+        public void PictureQuestionTest_ConstructorByPatternName()
+        {
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            PictureQuestion Q = new PictureQuestion(pattern);
+            Assert.AreEqual(pattern, Q.CorrectAnswer);
+        }
+
+      
+
+        [Test]
+        // Тестирование распознавания правильного ответа
+        public void PictureQuestionTest_CorrectAnswer()
+        {
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            PictureQuestion Q = new PictureQuestion(pattern, picture1);
+            Assert.IsTrue(Q.TryAnswer(pattern));
+        }
+
+      
+        
     }
 }
