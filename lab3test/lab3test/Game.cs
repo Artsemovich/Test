@@ -91,24 +91,36 @@ namespace lab3test
         // Конструктор по умолчанию
         public PictureQuestion()
         {
-            ;
+            CorrectAnswer = PatternName.NoPattern;
+            Picture = null;
         }
         // Конструктор, создает вопрос с заданным правильным ответом
         public PictureQuestion(PatternName pattern)
         {
-            ;
+            CorrectAnswer = pattern;
+            Picture = null;
         }
         // Конструктор, создает вопрос с заданным правильным ответом и изображением
         public PictureQuestion(PatternName pattern, Image pattern_picture)
         {
-            ;
+            CorrectAnswer = pattern;
+            Picture = pattern_picture;
         }
         // Статический метод, возвращает вопрос с заданным правильным ответом, изображение берет из файла
-        public static PictureQuestion(PatternName pattern, String FileName)
+        public static PictureQuestion FromFile(PatternName pattern, String FileName)
         {
-
+            try
+            {
+                PictureQuestion Q = new PictureQuestion(pattern, Image.FromFile(FileName));
+                return Q;
+            }
+            catch (System.Exception e)
+            {
+                return null; // Если не получилось вытащить изображение из файла, возвращаем null
+            }
         }
     }
+
 
 }
 
