@@ -302,6 +302,12 @@ namespace lab3test
             return CorrectAnswers;
         }
 
+        // Возвращает количество выбранных игроком правильных ответов
+        public int GetCorrectAnswers()
+        {
+            return CorrectAnswers;
+        }
+
         // Возвращает количество выбранных игроком неправильных ответов
         public int GetIncorrectAnswers()
         {
@@ -317,7 +323,9 @@ namespace lab3test
         // Обнуляет параметры игры, но не запускает игру
         public void NewGame()
         {
-           ;
+            Counter = 0;
+            CorrectAnswers = 0;
+            IncorrectAnswers = 0;
         }
 
         // Проверяет, идет ли игра
