@@ -319,5 +319,17 @@ namespace lab3test
             Game.Start();
             Assert.AreEqual(Game.Questions[0], Game.CurrentQuestion());
         }
+        [Test]
+        // За первым вопросом следует второй
+        public void PatternsGameTest_GameCurrentQuestionSecondAfterFirst()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Game.AddQuestion(pattern, "true != false");
+            Game.AddQuestion(pattern, "false != true");
+            Game.Start();
+            Game.SetAnswer((PatternName)rand.Next(PatternsCount));
+            Assert.AreEqual(Game.Questions[1], Game.CurrentQuestion());
+        }
     }
 }
