@@ -28,18 +28,49 @@ namespace lab3test
         // Конструктор по умолчанию
         public Question()
         {
-            ;
+            CorrectAnswer = PatternName.NoPattern;
         }
 
         // Конструктор вопроса с заданным правильным ответом
         public Question(PatternName pattern)
         {
-            ;
+            CorrectAnswer = pattern;
         }
 
         // Проверка, правильный ли выбран ответ
+        public bool TryAnswer(PatternName Answer)
+        {
+            if (CorrectAnswer == Answer) return true;
+            return false;
+        }
+    };
 
-    }
+    // Вопрос "угадать паттерн по коду"
+    public class CodeQuestion : Question
+    {
+        public String Code; // Код программы
+
+        // Конструктор по умолчанию
+        public CodeQuestion()
+        {
+           ;
+        }
+        // Конструктор, создает вопрос с заданным правильным ответом
+        public CodeQuestion(PatternName pattern)
+        {
+            ;
+        }
+        // Конструктор, создает вопрос с заданным правильным ответом и кодом программы
+        public CodeQuestion(PatternName pattern, String pattern_code)
+        {
+           ;
+        }
+        // Статический метод, возвращает вопрос с заданным правильным ответом, код берет из файла
+        public CodeQuestion (PatternName pattern, String FileName)
+        {
+            ;
+        }
+    };
 }
 
  
