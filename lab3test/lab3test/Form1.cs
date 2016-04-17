@@ -48,7 +48,8 @@ namespace lab3test
                     ShowQuestion();
                 }
             }
-            else {
+            else
+            {
                 Game.Stop();
                 if (Game.IsOn() == false)
                 {
@@ -64,7 +65,8 @@ namespace lab3test
             }
         }
 
-        private void ShowQuestion() {
+        private void ShowQuestion()
+        {
             if (Game.IsOn())
             {
                 Question question = Game.CurrentQuestion();
@@ -85,7 +87,9 @@ namespace lab3test
                 button3.Text = PatternsGame.PatternString(AnswerVariants[1]);
                 button4.Text = PatternsGame.PatternString(AnswerVariants[2]);
                 button5.Text = PatternsGame.PatternString(AnswerVariants[3]);
-            }else{
+            }
+            else
+            {
                 pictureBox1.Visible = false;
                 textBox1.Visible = false;
                 button1.Text = "Старт";
@@ -96,9 +100,11 @@ namespace lab3test
             }
         }
 
-        private void SetAnswer(PatternName answer) {
+        private void SetAnswer(PatternName answer)
+        {
             Game.SetAnswer(answer);
-            if (Game.IsOn() == false) {
+            if (Game.IsOn() == false)
+            {
                 MessageBox.Show("Верных ответов: " + Game.GetCorrectAnswers() + ", неверных: " + Game.GetIncorrectAnswers() + ", из " + Game.GetQuestionsCount() + " вопросов.");
             }
             ShowQuestion();

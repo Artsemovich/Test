@@ -120,6 +120,7 @@ namespace lab3test
             }
         }
     }
+
     public class PatternsGame
     {
         public List<Question> Questions; // Список вопросов игры
@@ -302,12 +303,6 @@ namespace lab3test
             return CorrectAnswers;
         }
 
-        // Возвращает количество выбранных игроком правильных ответов
-        public int GetCorrectAnswers()
-        {
-            return CorrectAnswers;
-        }
-
         // Возвращает количество выбранных игроком неправильных ответов
         public int GetIncorrectAnswers()
         {
@@ -346,7 +341,4 @@ namespace lab3test
             On = false;
         }
     };
-
 }
-
- 
