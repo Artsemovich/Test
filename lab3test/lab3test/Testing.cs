@@ -298,6 +298,14 @@ namespace lab3test
             Assert.AreEqual(picture1, ((PictureQuestion)(Game.Questions[Game.Questions.Count - 1])).Picture); // совпадает изображение
             Assert.AreEqual(pattern, Game.Questions[Game.Questions.Count - 1].CorrectAnswer); // совпадает паттерн
         }
-
+        [Test]
+        // Пока игра не началась, текущий вопрос - null
+        public void PatternsGameTest_GameOffCurrentQuestionNull()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Game.AddQuestion(pattern, "true != false");
+            Assert.AreEqual(null, Game.CurrentQuestion());
+        }
     }
 }
