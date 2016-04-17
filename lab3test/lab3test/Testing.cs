@@ -165,7 +165,38 @@ namespace lab3test
             Assert.AreEqual(pattern, Q.CorrectAnswer);
         }
 
-      
+        [Test]
+        // Тестирование конструктора по названию паттерна и изображению
+        public void PictureQuestionTest_ConstructorByPatternNameAndPicture()
+        {
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            PictureQuestion Q = new PictureQuestion(pattern, picture1);
+            Assert.AreEqual(pattern, Q.CorrectAnswer);
+            Assert.AreEqual(picture1, Q.Picture);
+        }
+
+        [Test]
+        // Тестирование загрузки вопроса из файла
+        public void PictureQuestionTest_FromFile()
+        {
+            String path = "./PictureQuestionTest_FromFile";
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            bool flag = true; // флаг, что при создании файла не возникло ошибок
+            try
+            {
+                picture1.Save(path); // сохраняем изображение в заданный файл
+            }
+            catch (System.Exception e)
+            {
+                flag = false; // если возникла ошибка, устанавливаем флаг в false
+            }
+            if (flag)   // если при создании файла не возникло ошибки, переходим к тесту
+            {
+                PictureQuestion Q = PictureQuestion.FromFile(pattern, path);
+                Assert.AreEqual(pattern, Q.CorrectAnswer);
+                Assert.IsNotNull(Q.Picture);
+            }
+        }
 
         [Test]
         // Тестирование распознавания правильного ответа
@@ -176,7 +207,18 @@ namespace lab3test
             Assert.IsTrue(Q.TryAnswer(pattern));
         }
 
-      
-        
+        [Test]
+        // Тестирование распознавания неправильного ответа
+        public void PictureQuestionTest_IncorrectAnswer()
+        {
+            PatternName pattern1, pattern2;                     // выбираем два несовпадающих паттерна
+            pattern1 = (PatternName)rand.Next(PatternsCount);
+            do
+            {
+                pattern2 = (PatternName)rand.Next(PatternsCount);
+            } while (pattern2 == pattern1);
+            PictureQuestion Q = new PictureQuestion(pattern1, picture1);
+            Assert.IsFalse(Q.TryAnswer(pattern2));
+        }
     }
 }
