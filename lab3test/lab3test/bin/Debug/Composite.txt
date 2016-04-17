@@ -1,0 +1,30 @@
+class Spice {
+protected:
+	string name;
+	string taste;	
+public:
+	Spice() {};
+	Spice(string _name,  string _taste);
+	virtual void Display()=0;
+	virtual void Composition()=0;
+	virtual void Taste()=0;	
+	virtual CompositeSpice *GetComposite(){return 0;}
+};
+class LeafSpice : public  Spice  {  Е };
+class CompositeSpice : public Spice  { Е};
+CompositeSpice ForMeat;
+CompositeSpice ForFish;
+LeafSpice *pepper = new LeafSpice("pepper","острый");
+LeafSpice *cardamon = new LeafSpice("cardamon","пикантный");
+LeafSpice *ginger = new LeafSpice("ginger",Уимбирь - hot!!!");
+ForMeat.Add(ginger);
+ForMeat.Add(pepper);
+
+ForFish.Add(cardamon);
+ForFish.Add(&ForMeat);
+
+printf("Spice for meat:\n");    ForMeat.Display(); 
+printf("Spice for fish:\n");      ForFish.Display();
+
+ForMeat.Remove(ginger);
+printf("Spice for meat after modification:\n");    ForMeat.Display();	

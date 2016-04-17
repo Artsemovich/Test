@@ -1,0 +1,56 @@
+class Math {   // класс, для которого создадим Proxy
+public:
+    virtual void sum()=0;
+    virtual void sub()=0;
+    virtual void mult()=0;
+    virtual void div()=0;
+};
+class M1 :         public Math  {
+public:
+    int a,b;
+    virtual void sum() {         cout << "Sum: " << a+b << endl;     }
+    virtual void sub()  {         cout << "Sub: " << a-b << endl;       }
+    virtual void mult() {         cout << "Mult: " << a*b << endl;    }
+    virtual void div() {      
+        if( b == 0) {             cout << "Div by zero!\n";
+        } else {
+            cout << "Div: " << a*b << endl;
+        }
+    }
+    M1(int inA, int inB)     {         a = inA;         b = inB;     }
+};
+class ProxyM1 :         public Math  {
+private:
+    M1 *prox;
+    void log() {         cout << "a=" << prox->a << ", b=" << prox->b << endl; }
+
+public:
+    virtual void sum() {         log();        prox->sum();    }
+    virtual void sub()  {        log();         prox->sub();     }
+    virtual void mult() {        log();        prox->mult();    }
+    virtual void div()   {        cout << "No div!" << endl;     }
+
+    ProxyM1(int inA, int inB) {
+        prox = new M1(inA,inB);   // здесь Proxy создает реальный объект М1
+    }
+    ~ProxyM1() {
+        delete prox;
+    }
+};
+int main(){
+    Math *t = new M1(6,0);
+    Math *p = new ProxyM1(6,0);
+    cout << "M1\n";
+    t->sum();
+    t->sub();
+    t->mult();
+    t->div();
+    cout << "\nProxyM1\n";
+    p->sum();
+    p->sub();
+    p->mult();
+    p->div();
+    delete p;
+    delete t;
+    return 0;
+}
