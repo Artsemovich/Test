@@ -220,5 +220,49 @@ namespace lab3test
             PictureQuestion Q = new PictureQuestion(pattern1, picture1);
             Assert.IsFalse(Q.TryAnswer(pattern2));
         }
+        // Тестирование класса PatternsGame
+        
+        [Test]
+        // Тестирование добавления произвольного вопроса 
+        public void PatternsGameTest_AddQuestion()
+        {
+            PatternsGame Game = new PatternsGame();
+
+            // добавляем случайное число вопросов
+            int N = rand.Next(25);
+            for (int i = 0; i < N; i++) {
+                Game.AddQuestion(new Question());
+            }
+
+            Question Q = new Question();
+            Game.AddQuestion(Q);
+            Assert.AreEqual(Q, Game.Questions[Game.Questions.Count-1]);     // проверяем, что в конце списка последний добавленный вопрос
+        }
+
+        [Test]
+        // Нельзя добавлять null
+        public void PatternsGameTest_AddQuestionNull()
+        {
+            PatternsGame Game = new PatternsGame();
+
+            // добавляем случайное число вопросов
+            int N = rand.Next(25);
+            for (int i = 0; i < N; i++)
+            {
+                Game.AddQuestion(new Question());
+            }
+
+            int count1 = Game.Questions.Count;  // количество вопросов до попытки добавить null
+            Game.AddQuestion(null);
+            int count2 = Game.Questions.Count;  // количество вопросов после попытки добавить null
+            Assert.AreEqual(count1, count2); // должны совпадать
+        }
+
+        [Test]
+        // Тестирование добавления вопроса по паттерну и коду
+        public void PatternsGameTest_AddQuestionPatternAndCode()
+        {
+            PatternsGame Game = new PatternsGame();
+        }
     }
 }
