@@ -207,30 +207,38 @@ namespace lab3test
         // Конструктор по умолчанию
         public PatternsGame()
         {
-            ;
+            Questions = new List<Question>();
+            Counter = 0;
+            CorrectAnswers = 0;
+            IncorrectAnswers = 0;
+            On = false;
         }
 
         // Добавляет вопрос к списку вопросов игры
         public void AddQuestion(Question q)
         {
-            ;
+            if (q != null)
+            {
+                Questions.Add(q);
+            }
         }
 
         // Создает вопрос типа "угадать паттерн по коду" и добавляет его к списку вопросов
         public void AddQuestion(PatternName answer, String code)
         {
-            ;
+            AddQuestion(new CodeQuestion(answer, code));
         }
 
         // Создает вопрос типа "угадать паттерн по изображению" и добавляет его к списку вопросов
         public void AddQuestion(PatternName answer, Image picture)
         {
-            ;
+            AddQuestion(new PictureQuestion(answer, picture));
         }
 
         // Если идёт игра, возвращает текущий вопрос. Иначе возвращает null
         public Question CurrentQuestion()
         {
+            if (On) return Questions[Counter];
             return null;
         }
 
@@ -239,10 +247,48 @@ namespace lab3test
         // Если вопросы закончились, завершает игру.
         public void SetAnswer(PatternName Answer)
         {
-            ;
+            if (CurrentQuestion() != null)
+            {
+                if (CurrentQuestion().TryAnswer(Answer))
+                {
+                    CorrectAnswers++;
+                }
+                else
+                {
+                    IncorrectAnswers++;
+                }
+                Counter++;
+                if (Counter >= Questions.Count) Stop();
+            }
         }
 
-        
+        // Возвращает список из N случайных вариантов ответа на текущий вопрос, где N - не больше, чем количество возможных паттернов.
+        // Варианты ответа не могут повторяться.
+        // Среди вариантов ответа обязательно содержится правильный.
+        public List<PatternName> AnswerVariants(int N)
+        {
+            Question Q = CurrentQuestion();
+            if (Q != null)
+            {
+                List<PatternName> variants = new List<PatternName>();
+                Random r = new Random();
+                int PatternsCount = Enum.GetValues(typeof(PatternName)).Length; // получаем количество возможных паттернов
+                if (N > PatternsCount) N = PatternsCount; // если N превышает это число, уменьшаем N
+                for (int i = 0; i < N; i++)
+                {
+                    PatternName v;
+                    do
+                    {
+                        v = (PatternName)r.Next(PatternsCount); // генерируем случайный вариант ответа
+                    } while (variants.Contains(v)); // если такой уже есть в списке, генерируем заново
+                    variants.Add(v); // добавляем в список
+                }
+                // если среди вариантов ответа нет правильного, добавляем его
+                if (variants.Contains(Q.CorrectAnswer) == false) variants[r.Next(N)] = Q.CorrectAnswer;
+                return variants;
+            }
+            return null;
+        }
 
         // Возвращает количество вопросов в игре
         public int GetQuestionsCount()
