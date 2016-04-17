@@ -279,5 +279,25 @@ namespace lab3test
             Assert.AreEqual(pattern, Game.Questions[Game.Questions.Count - 1].CorrectAnswer); // совпадает паттерн
         }
 
+        [Test]
+        // Тестирование добавления вопроса по паттерну и изображению
+        public void PatternsGameTest_AddQuestionPatternAndPicture()
+        {
+            PatternsGame Game = new PatternsGame();
+
+            // добавляем случайное число вопросов
+            int N = rand.Next(25);
+            for (int i = 0; i < N; i++)
+            {
+                Game.AddQuestion(new Question());
+            }
+
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Game.AddQuestion(pattern, picture1);
+
+            Assert.AreEqual(picture1, ((PictureQuestion)(Game.Questions[Game.Questions.Count - 1])).Picture); // совпадает изображение
+            Assert.AreEqual(pattern, Game.Questions[Game.Questions.Count - 1].CorrectAnswer); // совпадает паттерн
+        }
+
     }
 }
