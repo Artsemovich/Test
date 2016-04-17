@@ -53,22 +53,33 @@ namespace lab3test
         // Конструктор по умолчанию
         public CodeQuestion()
         {
-           ;
+            CorrectAnswer = PatternName.NoPattern;
+            Code = "";
         }
         // Конструктор, создает вопрос с заданным правильным ответом
         public CodeQuestion(PatternName pattern)
         {
-            ;
+            CorrectAnswer = pattern;
+            Code = "";
         }
         // Конструктор, создает вопрос с заданным правильным ответом и кодом программы
         public CodeQuestion(PatternName pattern, String pattern_code)
         {
-           ;
+            CorrectAnswer = pattern;
+            Code = pattern_code;
         }
         // Статический метод, возвращает вопрос с заданным правильным ответом, код берет из файла
-        public CodeQuestion (PatternName pattern, String FileName)
+        public static CodeQuestion FromFile(PatternName pattern, String FileName)
         {
-            ;
+            try
+            {
+                CodeQuestion Q = new CodeQuestion(pattern, File.ReadAllText(FileName));
+                return Q;
+            }
+            catch (System.Exception e)
+            {
+                return null; // Если не получилось вытащить код из файла, возвращаем null
+            }
         }
     };
 }
