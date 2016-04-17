@@ -263,6 +263,21 @@ namespace lab3test
         public void PatternsGameTest_AddQuestionPatternAndCode()
         {
             PatternsGame Game = new PatternsGame();
+
+            // добавляем случайное число вопросов
+            int N = rand.Next(25);
+            for (int i = 0; i < N; i++)
+            {
+                Game.AddQuestion(new Question());
+            }
+
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            String code = "true != false";
+            Game.AddQuestion(pattern, code);
+
+            Assert.AreEqual(code, ((CodeQuestion)(Game.Questions[Game.Questions.Count - 1])).Code); // совпадает код
+            Assert.AreEqual(pattern, Game.Questions[Game.Questions.Count - 1].CorrectAnswer); // совпадает паттерн
         }
+
     }
 }
