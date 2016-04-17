@@ -87,10 +87,64 @@ namespace lab3test
             Assert.AreEqual(pattern, Q.CorrectAnswer);
         }
 
-       
-       
-       
+        [Test]
+        // Тестирование конструктора по названию паттерна и коду
+        public void CodeQuestionTest_ConstructorByPatternNameAndCode()
+        {
+            String code = "true != false";
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            CodeQuestion Q = new CodeQuestion(pattern, code);
+            Assert.AreEqual(pattern, Q.CorrectAnswer);
+            Assert.AreEqual(code, Q.Code);
+        }
+
+        [Test]
+        // Тестирование создания вопроса из файла
+        public void CodeQuestionTest_FromFile()
+        {
+            String path = "./CodeQuestionTest_FromFile";
+            String code = "true != false";
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            bool flag = true; // флаг, что при создании файла не возникло ошибок
+            try
+            {
+                File.Create(path).Close();  // создаем файл с заданным содержимым
+                File.WriteAllText(path, code);
+            }
+            catch (System.Exception e)
+            {
+                flag = false; // если возникла ошибка, устанавливаем флаг в false
+            }
+            if (flag)   // если при создании файла не возникло ошибки, переходим к тесту
+            {
+                CodeQuestion Q = CodeQuestion.FromFile(pattern, path);
+                Assert.AreEqual(pattern, Q.CorrectAnswer);
+                Assert.AreEqual(code, Q.Code);
+            }
+        }
+
+        [Test]
+        // Тестирование распознавания правильного ответа
+        public void CodeQuestionTest_CorrectAnswer()
+        {
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            CodeQuestion Q = new CodeQuestion(pattern, "true != false");
+            Assert.IsTrue(Q.TryAnswer(pattern));
+        }
+
+        [Test]
+        // Тестирование распознавания неправильного ответа
+        public void CodeQuestionTest_IncorrectAnswer()
+        {
+            PatternName pattern1, pattern2;                     // выбираем два несовпадающих паттерна
+            pattern1 = (PatternName)rand.Next(PatternsCount);
+            do
+            {
+                pattern2 = (PatternName)rand.Next(PatternsCount);
+            } while (pattern2 == pattern1);
+            CodeQuestion Q = new CodeQuestion(pattern1, "true != false");
+            Assert.IsFalse(Q.TryAnswer(pattern2));
+        }
 
     }
-
 }
