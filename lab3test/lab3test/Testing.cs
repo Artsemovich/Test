@@ -331,5 +331,35 @@ namespace lab3test
             Game.SetAnswer((PatternName)rand.Next(PatternsCount));
             Assert.AreEqual(Game.Questions[1], Game.CurrentQuestion());
         }
+        [Test]
+        // Выбор правильного ответа
+        public void PatternsGameTest_SetAnswerCorrect()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Game.AddQuestion(pattern, "true != false");
+            Game.Start();
+            Game.SetAnswer(pattern);
+            Assert.AreEqual(1, Game.CorrectAnswers);
+            Assert.AreEqual(0, Game.IncorrectAnswers);
+        }
+
+        [Test]
+        // Выбор неправильного ответа
+        public void PatternsGameTest_SetAnswerIncorrect()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern1 = (PatternName)rand.Next(PatternsCount), pattern2;     // выбираем два несовпадающих паттерна
+            do
+            {
+                pattern2 = (PatternName)rand.Next(PatternsCount);
+            } while (pattern2 == pattern1);
+            Game.AddQuestion(pattern1, "true != false");
+            Game.Start();
+            Game.SetAnswer(pattern2);
+            Assert.AreEqual(0, Game.CorrectAnswers);
+            Assert.AreEqual(1, Game.IncorrectAnswers);
+        }
+
     }
 }
