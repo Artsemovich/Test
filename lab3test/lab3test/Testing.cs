@@ -360,6 +360,343 @@ namespace lab3test
             Assert.AreEqual(0, Game.CorrectAnswers);
             Assert.AreEqual(1, Game.IncorrectAnswers);
         }
+        [Test]
+        // После выбора ответа происходит переход к следующему вопросу
+        public void PatternsGameTest_SetAnswerOpensNextQuestion()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Game.AddQuestion(pattern, "true != false");
+            Game.AddQuestion(pattern, "false != true");
+            Game.Start();
+            Game.SetAnswer(pattern);
+            Assert.AreEqual(Game.Questions[1], Game.CurrentQuestion());
+        }
 
+        [Test]
+        // Варианты ответа содержат правильный
+        public void PatternsGameTest_AnswerVariantsContainCorrect()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Game.AddQuestion(pattern, "true != false");
+            Game.Start();
+            List<PatternName> variants = Game.AnswerVariants(4);
+            Assert.IsTrue(variants.Contains(pattern));
+        }
+
+        [Test]
+        // Варианты ответа не повторяются
+        public void PatternsGameTest_AnswerVariantsDoNotRepeat()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Game.AddQuestion(pattern, "true != false");
+            Game.Start();
+            List<PatternName> variants = Game.AnswerVariants(4);
+            bool flag = true; // флаг, что не встретились совпадающие
+            for (int i = 0; i < variants.Count; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    if (variants[i] == variants[j]) flag = false; // попарно сравниваем
+                }
+            }
+            Assert.IsTrue(flag);
+        }
+
+        [Test]
+        // Варианты ответа генерируются в требуемом количестве, но не больше, чем количество паттернов в перечислении PatternName
+        public void PatternsGameTest_AnswerVariantsCountIsCorrect()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Game.AddQuestion(pattern, "true != false");
+            Game.Start();
+            int varcount = rand.Next(PatternsCount); // число вариантов ответа
+            List<PatternName> variants = Game.AnswerVariants(varcount);
+            Assert.AreEqual(varcount, variants.Count);
+        }
+
+        [Test]
+        // Функция GetQuestionsCount возвращает количество вопросов
+        public void PatternsGameTest_GetQuestionsCount()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+
+            // добавляем случайное количество вопросов
+            int qcount = rand.Next(20);
+            for (int i = 0; i < qcount; i++)
+            {
+                Game.AddQuestion(pattern, "true != false");
+            }
+
+            Assert.AreEqual(qcount, Game.GetQuestionsCount());
+        }
+
+        [Test]
+        // Функция GetCorrectAnswers возвращает количество правильных ответов
+        public void PatternsGameTest_GetCorrectAnswers()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern1 = (PatternName)rand.Next(PatternsCount), pattern2;     // генерируем два несовпадающих паттерна
+            do
+            {
+                pattern2 = (PatternName)rand.Next(PatternsCount);
+            } while (pattern2 == pattern1);
+
+            // генерируем случайное количество вопросов с одинаковым правильным ответом
+            int qcount = rand.Next(20);
+            for (int i = 0; i < qcount; i++)
+            {
+                Game.AddQuestion(pattern1, "true != false");
+            }
+
+            // начинаем игру
+            Game.Start();
+            int correct = 0;
+            int incorrect = 0;
+            for (int i = 0; i < qcount; i++)
+            {
+                if (rand.Next() % 2 == 1)
+                {
+                    Game.SetAnswer(pattern1); // отвечаем правильно и увеличиваем счетчик правильных ответов
+                    correct++;
+                }
+                else
+                {
+                    Game.SetAnswer(pattern2); // отвечаем неправильно и увеличиваем счетчик неправильных ответов
+                    incorrect++;
+                }
+            }
+
+            Assert.AreEqual(correct, Game.GetCorrectAnswers());
+        }
+
+        [Test]
+        // Функция GetInorrectAnswers возвращает количество неправильных ответов
+        public void PatternsGameTest_GetIncorrectAnswers()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern1 = (PatternName)rand.Next(PatternsCount), pattern2;     // генерируем два несовпадающих паттерна
+            do
+            {
+                pattern2 = (PatternName)rand.Next(PatternsCount);
+            } while (pattern2 == pattern1);
+
+            // генерируем случайное количество вопросов с одинаковым правильным ответом
+            int qcount = rand.Next(20);
+            for (int i = 0; i < qcount; i++)
+            {
+                Game.AddQuestion(pattern1, "true != false");
+            }
+
+            // начинаем игру
+            Game.Start();
+            int correct = 0;
+            int incorrect = 0;
+            for (int i = 0; i < qcount; i++)
+            {
+                if (rand.Next() % 2 == 1)
+                {
+                    Game.SetAnswer(pattern1); // отвечаем правильно и увеличиваем счетчик правильных ответов
+                    correct++;
+                }
+                else
+                {
+                    Game.SetAnswer(pattern2); // отвечаем неправильно и увеличиваем счетчик неправильных ответов
+                    incorrect++;
+                }
+            }
+
+            Assert.AreEqual(incorrect, Game.GetIncorrectAnswers());
+        }
+
+        [Test]
+        // Функция GetCounter возвращает номер текущего вопроса
+        public void PatternsGameTest_GetCounter()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+
+            // добавляем случайное количество вопросов
+            int qcount = rand.Next(20);
+            for (int i = 0; i < qcount; i++)
+            {
+                Game.AddQuestion(pattern, "true != false");
+            }
+            Game.Start();
+
+            // отвечаем на случайное количество вопросов
+            int count = rand.Next(qcount);
+            for (int i = 0; i < count; i++)
+            {
+                Game.SetAnswer(pattern);
+            }
+
+            Assert.AreEqual(count, Game.GetCounter());
+        }
+
+        [Test]
+        // Функция NewGame обнуляет счетчик
+        public void PatternsGameTest_NewGameCounter()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern1 = (PatternName)rand.Next(PatternsCount), pattern2; // выбираем два несовпадающих паттерна
+            do
+            {
+                pattern2 = (PatternName)rand.Next(PatternsCount);
+            } while (pattern2 == pattern1);
+
+            // генерируем случайное число вопросов с одинаковым правильным ответом
+            int qcount = rand.Next(20);
+            for (int i = 0; i < qcount; i++)
+            {
+                Game.AddQuestion(pattern1, "true != false");
+            }
+
+            // проходим игру, делая случайное количество правильных и неправильных ответов
+            Game.Start();
+            for (int i = 0; i < qcount; i++)
+            {
+                if (rand.Next() % 2 == 1)
+                {
+                    Game.SetAnswer(pattern1);
+                }
+                else
+                {
+                    Game.SetAnswer(pattern2);
+                }
+            }
+
+            // сбрасываем параметры игры
+            Game.NewGame();
+
+            Assert.AreEqual(0, Game.Counter);
+        }
+
+        [Test]
+        // Функция NewGame обнуляет правильные ответы
+        public void PatternsGameTest_NewGameCorrectAnswers()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern1 = (PatternName)rand.Next(PatternsCount), pattern2; // выбираем два несовпадающих паттерна
+            do
+            {
+                pattern2 = (PatternName)rand.Next(PatternsCount);
+            } while (pattern2 == pattern1);
+
+            // генерируем случайное число вопросов с одинаковым правильным ответом
+            int qcount = rand.Next(20);
+            for (int i = 0; i < qcount; i++)
+            {
+                Game.AddQuestion(pattern1, "true != false");
+            }
+
+            // проходим игру, делая случайное количество правильных и неправильных ответов
+            Game.Start();
+            for (int i = 0; i < qcount; i++)
+            {
+                if (rand.Next() % 2 == 1)
+                {
+                    Game.SetAnswer(pattern1);
+                }
+                else
+                {
+                    Game.SetAnswer(pattern2);
+                }
+            }
+
+            // сбрасываем параметры игры
+            Game.NewGame();
+
+            Assert.AreEqual(0, Game.CorrectAnswers);
+        }
+
+        [Test]
+        // Функция NewGame обнуляет неправильные ответы
+        public void PatternsGameTest_NewGameIncorrectAnswers()
+        {
+            PatternsGame Game = new PatternsGame();
+            PatternName pattern1 = (PatternName)rand.Next(PatternsCount), pattern2; // выбираем два несовпадающих паттерна
+            do
+            {
+                pattern2 = (PatternName)rand.Next(PatternsCount);
+            } while (pattern2 == pattern1);
+
+            // генерируем случайное число вопросов с одинаковым правильным ответом
+            int qcount = rand.Next(20);
+            for (int i = 0; i < qcount; i++)
+            {
+                Game.AddQuestion(pattern1, "true != false");
+            }
+
+            // проходим игру, делая случайное количество правильных и неправильных ответов
+            Game.Start();
+            for (int i = 0; i < qcount; i++)
+            {
+                if (rand.Next() % 2 == 1)
+                {
+                    Game.SetAnswer(pattern1);
+                }
+                else
+                {
+                    Game.SetAnswer(pattern2);
+                }
+            }
+
+            // сбрасываем параметры игры
+            Game.NewGame();
+
+            Assert.AreEqual(0, Game.IncorrectAnswers);
+        }
+
+        [Test]
+        // Функция IsOn возвращает false, если игра не началась
+        public void PatternsGameTest_IsOnNotStarted()
+        {
+            PatternsGame Game = new PatternsGame();
+            Assert.IsFalse(Game.IsOn());
+        }
+
+        [Test]
+        // Функция IsOn возвращает true, если игра началась
+        public void PatternsGameTest_IsOnStarted()
+        {
+            PatternsGame Game = new PatternsGame();
+            Game.Start();
+            Assert.IsTrue(Game.IsOn());
+        }
+
+        [Test]
+        // Функция IsOn возвращает false, если игра завершена
+        public void PatternsGameTest_IsOnStopped()
+        {
+            PatternsGame Game = new PatternsGame();
+            Game.Start();
+            Game.Stop();
+            Assert.IsFalse(Game.IsOn());
+        }
+
+        [Test]
+        // Метод Start начинает игру
+        public void PatternsGameTest_Start()
+        {
+            PatternsGame Game = new PatternsGame();
+            Game.On = false;
+            Game.Start();
+            Assert.IsTrue(Game.IsOn());
+        }
+
+        [Test]
+        // Метод Stop завершает игру
+        public void PatternsGameTest_Stop()
+        {
+            PatternsGame Game = new PatternsGame();
+            Game.On = true;
+            Game.Stop();
+            Assert.IsFalse(Game.IsOn());
+        }
     }
 }
