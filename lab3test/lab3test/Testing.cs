@@ -18,7 +18,8 @@ namespace lab3test
         Random rand;
         int PatternsCount;
 
-        public Testing() {
+        public Testing()
+        {
             rand = new Random();
             PatternsCount = Enum.GetValues(typeof(PatternName)).Length;
             picture1 = lab3test.Properties.Resources.picture1;
@@ -28,7 +29,8 @@ namespace lab3test
 
         [Test]
         // Тестирование конструктора по умолчанию
-        public void QuestionTest_DefaultConstructor() { 
+        public void QuestionTest_DefaultConstructor()
+        {
             Question Q = new Question();
             Assert.AreEqual(PatternName.NoPattern, Q.CorrectAnswer);
         }
@@ -42,6 +44,53 @@ namespace lab3test
             Assert.AreEqual(pattern, Q.CorrectAnswer);
         }
 
-        
+
+        [Test]
+        // Тестирование распознавания правильного ответа
+        public void QuestionTest_CorrectAnswer()
+        {
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            Question Q = new Question(pattern);
+            Assert.IsTrue(Q.TryAnswer(pattern));
+        }
+
+        [Test]
+        // Тестирование распознавания неправильного ответа
+        public void QuestionTest_IncorrectAnswer()
+        {
+            PatternName pattern1, pattern2;                     // выбираем два несовпадающих паттерна
+            pattern1 = (PatternName)rand.Next(PatternsCount);
+            do
+            {
+                pattern2 = (PatternName)rand.Next(PatternsCount);
+            } while (pattern2 == pattern1);
+            Question Q = new Question(pattern1);
+            Assert.IsFalse(Q.TryAnswer(pattern2));
+        }
+
+        // Тестирование класса CodeQuestion
+
+        [Test]
+        // Тестирование конструктора по умолчанию
+        public void CodeQuestionTest_DefaultConstructor()
+        {
+            CodeQuestion Q = new CodeQuestion();
+            Assert.AreEqual(PatternName.NoPattern, Q.CorrectAnswer);
+        }
+
+        [Test]
+        // Тестирование конструктора по названию паттерна
+        public void CodeQuestionTest_ConstructorByPatternName()
+        {
+            PatternName pattern = (PatternName)rand.Next(PatternsCount);
+            CodeQuestion Q = new CodeQuestion(pattern);
+            Assert.AreEqual(pattern, Q.CorrectAnswer);
+        }
+
+       
+       
+       
+
     }
+
 }
