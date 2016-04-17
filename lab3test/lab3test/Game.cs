@@ -82,6 +82,34 @@ namespace lab3test
             }
         }
     };
+
+    // Вопрос "угадать паттерн по изображению"
+    public class PictureQuestion : Question
+    {
+        public Image Picture; // Изображение (UML-диаграмма)
+
+        // Конструктор по умолчанию
+        public PictureQuestion()
+        {
+            ;
+        }
+        // Конструктор, создает вопрос с заданным правильным ответом
+        public PictureQuestion(PatternName pattern)
+        {
+            ;
+        }
+        // Конструктор, создает вопрос с заданным правильным ответом и изображением
+        public PictureQuestion(PatternName pattern, Image pattern_picture)
+        {
+            ;
+        }
+        // Статический метод, возвращает вопрос с заданным правильным ответом, изображение берет из файла
+        public static PictureQuestion(PatternName pattern, String FileName)
+        {
+
+        }
+    }
+
 }
 
  
